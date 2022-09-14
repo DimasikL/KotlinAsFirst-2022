@@ -24,7 +24,7 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
 fun isNumberHappy(number: Int): Boolean {
     val firstnum = number / 1000 + number / 100 % 10
     val secondnum = number / 10 % 10 + number % 10
-    return if (firstnum == secondnum) true else false
+    return (firstnum == secondnum)
 
 }
 
@@ -87,9 +87,9 @@ fun circleInside(
  */
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
     val minNum = minOf(a, b, c)
-    val Mean = a + b + c - minNum - maxOf(a, b, c)
+    val mean = a + b + c - minNum - maxOf(a, b, c)
     return when {
-        (minNum <= r && Mean <= s) || (minNum <= s && Mean <= r) -> true
+        (minNum <= r && mean <= s) || (minNum <= s && mean <= r) -> true
         else -> false
     }
 
