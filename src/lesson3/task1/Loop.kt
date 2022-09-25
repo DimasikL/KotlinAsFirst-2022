@@ -2,9 +2,8 @@
 
 package lesson3.task1
 
-import kotlin.math.abs
-import kotlin.math.pow
-import kotlin.math.sqrt
+import lesson1.task1.sqr
+import kotlin.math.*
 
 
 // Урок 3: циклы
@@ -40,7 +39,6 @@ fun isPrime(n: Int): Boolean {
     return true
 }
 
-fun sqr(x: Int): Int = x * x
 
 /**
  * Пример
@@ -187,7 +185,7 @@ fun lcm(m: Int, n: Int): Int {
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = abs(m*n) / lcm(m,n) == 1
+fun isCoPrime(m: Int, n: Int): Boolean = abs(m * n) / lcm(m, n) == 1
 
 
 /**
@@ -267,7 +265,19 @@ fun hasDifferentDigits(n: Int): Boolean {
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
  */
-fun sin(x: Double, eps: Double): Double = TODO()
+fun sin(x: Double, eps: Double): Double {
+    val deg = if (x <= -2.0 * PI || x >= 2.0 * PI) x % (2.0 * PI)
+    else x
+    var absNumber = deg
+    var sinus = 0.0
+    var i = 1
+    while (eps <= absNumber.absoluteValue) {
+        sinus += absNumber
+        absNumber *= (-deg * deg) / (2 * i * (2 * i + 1))
+        i++
+    }
+    return sinus
+}
 
 /**
  * Средняя (4 балла)
@@ -278,7 +288,22 @@ fun sin(x: Double, eps: Double): Double = TODO()
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.cos и другие стандартные реализации функции косинуса в этой задаче запрещается.
  */
-fun cos(x: Double, eps: Double): Double = TODO()
+fun cos(x: Double, eps: Double): Double {
+    val deg = if (x <= -2.0 * PI || x >= 2.0 * PI) x % (2.0 * PI)
+    else x
+    val placeDegree =
+        when {
+            deg >= 0.0 && (deg in 0.0..0.5 * PI || deg in 1.5 * PI..2.0 * PI) -> 1.0
+            deg in -0.5 * PI..0.0 || deg in -2.0 * PI..-1.5 * PI -> 1.0
+            else -> -1.0
+        }
+    val cosSqr = if (1.0 - sqr(sin(deg, eps)) < 0) 0.0
+    else 1.0 - sqr(sin(deg, eps))
+    return sqrt(cosSqr) / placeDegree
+
+
+}
+
 
 /**
  * Сложная (4 балла)
@@ -291,21 +316,13 @@ fun cos(x: Double, eps: Double): Double = TODO()
  */
 fun squareSequenceDigit(n: Int): Int {
     val num = n
-    if (num == 1) return num
-    var x = 1
-    var y = 1
-    while (x <= n) {
-        when {
-            sqr(y) < 10 -> x++
-            sqr(y) in 10..99 -> x += 2
-            sqr(y) in 100..999 -> x +=3
-            sqr(y) in 1000..9999 -> x +=4
-            sqr(y) in 10000..99999 -> x +=5
-        }
-        y++
-
+    var count = 0
+    var i = 1
+    while (count < num) {
+        count += digitNumber(sqr(i))
+        i++
     }
-    return (sqr(y - 1) / (10.0).pow(x - num - 1) % 10).toInt()
+    return (sqr(i - 1) / (10.0).pow(count - num) % 10).toInt()
 }
 
 /**
@@ -318,23 +335,12 @@ fun squareSequenceDigit(n: Int): Int {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun fibSequenceDigit(n: Int): Int {
-    var sum = 0
-    var fNumber = 1
-    var sNumber = 2
     val num = n
-    if (num <= 2) return 1
-    var x = 4
-    while (n>=x) {
-        sum = fNumber + sNumber
-        fNumber = sNumber
-        sNumber = sum
-        when {
-            sum < 10 -> x++
-            sum in 10..99 -> x += 2
-            sum in 100..999 -> x +=3
-            sum in 1000..9999 -> x +=4
-            sum in 10000..99999 -> x +=5
-        }
+    var count = 0
+    var i = 1
+    while (count < num) {
+        count += digitNumber(fib(i))
+        i++
     }
-        return ((sum) / (10.0).pow(x - num - 1) % 10).toInt()
+    return (fib(i - 1) / (10.0).pow(count - num) % 10).toInt()
 }
