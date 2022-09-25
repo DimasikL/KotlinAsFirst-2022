@@ -248,7 +248,7 @@ fun hasDifferentDigits(n: Int): Boolean {
     var x = 1
     var num = n
     var count = 0
-    var k = n % 10
+    val k = n % 10
     while (num > 10) {
         x++
         num /= 10
@@ -297,8 +297,10 @@ fun squareSequenceDigit(n: Int): Int {
     while (x <= n) {
         when {
             sqr(y) < 10 -> x++
-            sqr(y) in 10..99 -> x = x + 2
-            sqr(y) in 100..999 -> x = x + 3
+            sqr(y) in 10..99 -> x += 2
+            sqr(y) in 100..999 -> x +=3
+            sqr(y) in 1000..9999 -> x +=4
+            sqr(y) in 10000..99999 -> x +=5
         }
         y++
 
@@ -319,7 +321,7 @@ fun fibSequenceDigit(n: Int): Int {
     var sum = 0
     var fNumber = 1
     var sNumber = 2
-    var num = n
+    val num = n
     if (num <= 2) return 1
     var x = 4
     while (n>=x) {
@@ -328,8 +330,10 @@ fun fibSequenceDigit(n: Int): Int {
         sNumber = sum
         when {
             sum < 10 -> x++
-            sum in 10..99 -> x = x + 2
-            sum in 100..999 -> x = x + 3
+            sum in 10..99 -> x += 2
+            sum in 100..999 -> x +=3
+            sum in 1000..9999 -> x +=4
+            sum in 10000..99999 -> x +=5
         }
     }
         return ((sum) / (10.0).pow(x - num - 1) % 10).toInt()
