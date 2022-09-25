@@ -113,13 +113,11 @@ fun whichRookThreatens(
     kingX: Int, kingY: Int,
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
-): Int {
-    return when {
+): Int =  when {
         rookX2 != kingX && kingX != rookX1 && rookY1 != kingY && kingY != rookY2 -> 0
         (rookX1 == kingX || rookY1 == kingY) && rookX2 != kingX && kingY != rookY2 -> 1
         (rookX2 == kingX || rookY2 == kingY) && kingX != rookX1 && rookY1 != kingY -> 2
         else -> 3
-    }
 }
 
 /**
@@ -176,7 +174,7 @@ fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
         a>= c && b>=d -> d-a
         c>= a && b>=d -> d-c
         c>= a && b<=d -> b-c
-        a>=c && b<= d -> b-a
+        a>=c && b<=d -> b-a
         else -> d-c
     }
 }
