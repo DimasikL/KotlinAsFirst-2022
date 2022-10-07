@@ -71,10 +71,10 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
 fun ageDescription(age: Int): String = when {
-        age % 10 == 1 && age %100 != 11 -> "$age год"
-        age %100 !in 12..14  && age % 10 in 2..4 -> "$age года"
-        else -> "$age лет"
-    }
+    age % 10 == 1 && age % 100 != 11 -> "$age год"
+    age % 100 !in 12..14 && age % 10 in 2..4 -> "$age года"
+    else -> "$age лет"
+}
 
 
 /**
@@ -113,11 +113,11 @@ fun whichRookThreatens(
     kingX: Int, kingY: Int,
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
-): Int =  when {
-        rookX2 != kingX && kingX != rookX1 && rookY1 != kingY && kingY != rookY2 -> 0
-        (rookX1 == kingX || rookY1 == kingY) && rookX2 != kingX && kingY != rookY2 -> 1
-        (rookX2 == kingX || rookY2 == kingY) && kingX != rookX1 && rookY1 != kingY -> 2
-        else -> 3
+): Int = when {
+    rookX2 != kingX && kingX != rookX1 && rookY1 != kingY && kingY != rookY2 -> 0
+    (rookX1 == kingX || rookY1 == kingY) && rookX2 != kingX && kingY != rookY2 -> 1
+    kingX != rookX1 && rookY1 != kingY -> 2
+    else -> 3
 }
 
 /**
@@ -134,13 +134,11 @@ fun rookOrBishopThreatens(
     kingX: Int, kingY: Int,
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
-): Int {
-    return when {
-        kingX != rookX && kingY != rookY && abs(kingX - bishopX) != abs(kingY - bishopY) -> 0
-        (kingX == rookX || kingY == rookY) && abs(kingX - bishopX) != abs(kingY - bishopY) -> 1
-        abs(kingX - bishopX) == abs(kingY - bishopY) && kingX != rookX && kingY != rookY -> 2
-        else -> 3
-    }
+): Int = when {
+    kingX != rookX && kingY != rookY && abs(kingX - bishopX) != abs(kingY - bishopY) -> 0
+    (kingX == rookX || kingY == rookY) && abs(kingX - bishopX) != abs(kingY - bishopY) -> 1
+    abs(kingX - bishopX) == abs(kingY - bishopY) && kingX != rookX && kingY != rookY -> 2
+    else -> 3
 }
 
 /**
@@ -170,12 +168,12 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
     return when {
-        a>d || b< c  -> -1
-        a>= c && b>=d -> d-a
-        c>= a && b>=d -> d-c
-        c>= a && b<=d -> b-c
-        a>=c && b<=d -> b-a
-        else -> d-c
+        a > d || b < c -> -1
+        a >= c && b >= d -> d - a
+        c >= a && b >= d -> d - c
+        c >= a -> b - c
+        b <= d -> b - a
+        else -> d - c
     }
 }
 

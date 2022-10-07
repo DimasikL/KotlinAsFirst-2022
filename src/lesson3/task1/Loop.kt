@@ -115,13 +115,13 @@ fun fib(n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
+    val limit = sqrt(n.toFloat()).toInt()
     var i = 1
-    while (n > 1) {
+    while (i != limit) {
         i++
-        if (n % i == 0)
-            break
+        if (n % i == 0) return i
     }
-    return i
+    return n
 }
 
 /**
@@ -218,19 +218,7 @@ fun revert(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean {
-    if (n < 10) return true
-    var num = n
-    var sec = 0
-    var fir: Int
-    while (num > 0) {
-        fir = num % 10
-        num /= 10
-        sec *= 10
-        sec += fir
-    }
-    return n == sec
-}
+fun isPalindrome(n: Int): Boolean = revert(n) == n
 
 
 /**
@@ -266,8 +254,7 @@ fun hasDifferentDigits(n: Int): Boolean {
  * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
  */
 fun sin(x: Double, eps: Double): Double {
-    val deg = if (x <= -2.0 * PI || x >= 2.0 * PI) x % (2.0 * PI)
-    else x
+    val deg = x % (2.0 * PI)
     var absNumber = deg
     var sinus = 0.0
     var i = 1
