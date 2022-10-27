@@ -81,7 +81,7 @@ fun digitNumber(n: Int): Int {
     do {
         count++
         number /= 10
-    } while (number > 0)
+    } while (number != 0)
     return count
 }
 
@@ -103,8 +103,6 @@ fun fib(n: Int): Int {
         fNumber = sNumber
         sNumber = sum
         count -= 1
-
-
     }
     return sum
 }
@@ -169,14 +167,18 @@ fun collatzSteps(x: Int): Int {
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int {
-    var maxi = maxOf(m, n)
-    if (m != 0 || n != 0) {
-        while (maxi % m != 0 || maxi % n != 0)
-            maxi++
+fun gcd(m: Int, n: Int): Int {
+    var min = minOf(m, n)
+    var max = maxOf(m, n)
+    while (min != 0) {
+        val gcdv = max
+        max = min
+        min = gcdv % max
     }
-    return maxi
+    return max
 }
+
+fun lcm(m: Int, n: Int) = (m * n) / gcd(m, n)
 
 /**
  * Средняя (3 балла)
@@ -185,7 +187,7 @@ fun lcm(m: Int, n: Int): Int {
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = abs(m * n) / lcm(m, n) == 1
+fun isCoPrime(m: Int, n: Int): Boolean = gcd(m,n) == 1
 
 
 /**
@@ -276,19 +278,16 @@ fun sin(x: Double, eps: Double): Double {
  * Использовать kotlin.math.cos и другие стандартные реализации функции косинуса в этой задаче запрещается.
  */
 fun cos(x: Double, eps: Double): Double {
-    val deg = if (x <= -2.0 * PI || x >= 2.0 * PI) x % (2.0 * PI)
-    else x
-    val placeDegree =
-        when {
-            deg >= 0.0 && (deg in 0.0..0.5 * PI || deg in 1.5 * PI..2.0 * PI) -> 1.0
-            deg in -0.5 * PI..0.0 || deg in -2.0 * PI..-1.5 * PI -> 1.0
-            else -> -1.0
-        }
-    val cosSqr = if (1.0 - sqr(sin(deg, eps)) < 0) 0.0
-    else 1.0 - sqr(sin(deg, eps))
-    return sqrt(cosSqr) / placeDegree
-
-
+    val deg = x % (2.0 * PI)
+    var absNumber = 1.0
+    var cos = 0.0
+    var i = 1.0
+    while (eps <= absNumber.absoluteValue) {
+        cos += absNumber
+        absNumber *= (-deg * deg) / ((2 * i - 1) * 2 * i)
+        i++
+    }
+    return cos
 }
 
 

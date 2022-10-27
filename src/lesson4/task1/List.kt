@@ -134,7 +134,7 @@ fun abs(v: List<Double>): Double {
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double = if (list.size == 0) 0.0 else list.sum() / (list.size)
+fun mean(list: List<Double>): Double = if (list.isEmpty()) 0.0 else list.sum() / (list.size)
 
 /**
  * Средняя (3 балла)
@@ -178,13 +178,9 @@ fun times(a: List<Int>, b: List<Int>): Int {
  */
 fun polynom(p: List<Int>, x: Int): Int {
     var v = 0
-    if (p.size == 0) v = 0
-    else
-        for (i in 0 until p.size) {
-            v += p[i] * (x.toDouble().pow(i.toDouble()).toInt())
-
-        }
-
+    for (i in 0 until p.size) {
+        v += p[i] * (x.toDouble().pow(i.toDouble()).toInt())
+    }
     return v
 }
 
@@ -233,19 +229,8 @@ fun factorize(n: Int): List<Int> {
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
-fun factorizeToString(n: Int): String {
-    var num = n
-    val result = mutableListOf<Int>()
-    var i = 2
-    while (!isPrime(num)) {
-        if (num % i == 0) {
-            result.add(i)
-            num /= i
-        } else i++
-    }
-    result.add(num)
-    return result.joinToString(separator = "*")
-}
+fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*")
+
 
 /**
  * Средняя (3 балла)
@@ -340,8 +325,8 @@ fun decimalFromString(str: String, base: Int): Int {
  */
 fun roman(n: Int): String {
     var arabNumber = n
-    val rome: List<String> = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
-    val arab: List<Int> = listOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
+    val rome = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
+    val arab = listOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
     var i = 0
     return buildString {
         while (arabNumber != 0) {
@@ -360,4 +345,92 @@ fun roman(n: Int): String {
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun russian(n: Int): String {
+    var result = ""
+    val firstThree = n / 1000
+    var secondThree = n % 1000
+    val lastNum = listOf("", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
+    val secNum = listOf(
+        "",
+        "десять ",
+        "двадцать ",
+        "тридцать ",
+        "сорок ",
+        "пятьдесят ",
+        "шестьдесят ",
+        "семьдесят ",
+        "восемьдесят ",
+        "девяносто "
+    )
+    val fNum =
+        listOf(
+            "",
+            "сто ",
+            "двести ",
+            "триста ",
+            "четыреста ",
+            "пятьсот ",
+            "шестьсот ",
+            "семьсот ",
+            "восемьсот ",
+            "девятьсот "
+        )
+    val tenPlus = listOf(
+        "",
+        "одиннадцать",
+        "двенадцать",
+        "тринадцать",
+        "четырнадцать",
+        "пятнадцать",
+        "шестнадцать",
+        "семнадцать",
+        "восемнадцать",
+        "девятнадцать"
+    )
+    val thousands = listOf(
+        "тысяч",
+        "одна тысяча",
+        "две тысячи",
+        "три тысячи",
+        "четыре тысячи",
+        "пять тысяч",
+        "шесть тысяч",
+        "семь тысяч",
+        "восемь тысяч",
+        "девять тысяч"
+    )
+    val thousandsforten = listOf(
+        "тысяч",
+        "тысяча",
+        "тысячи",
+        "тысячи",
+        "тысячи",
+        "тысяч",
+        "тысяч",
+        "тысяч",
+        "тысяч",
+        "тысяч"
+    )
+    if (firstThree == 0) {
+        result += fNum[secondThree / 100]
+        if (secondThree % 100 in 11..19) {
+            result += tenPlus[secondThree % 10]
+        } else result += secNum[secondThree % 100 / 10]
+        if (secondThree % 100 / 10 != 1) result += lastNum[secondThree % 10]
+    } else {
+        result += fNum[firstThree / 100]
+        if (firstThree % 100 in 11..19) {
+            result += tenPlus[firstThree % 10]
+        } else result += secNum[firstThree % 100 / 10]
+        if (firstThree % 100 / 10 != 1) result += thousands[firstThree % 10]
+        else result += " " + thousandsforten[firstThree % 10]
+        if (secondThree != 0) {
+            result += " " + fNum[secondThree / 100]
+            if (secondThree % 100 in 11..19) {
+                result += tenPlus[secondThree % 10]
+            } else result += secNum[secondThree % 100 / 10]
+            if (secondThree % 100 / 10 != 1) result += lastNum[secondThree % 10]
+        }
+    }
+    return result
+}

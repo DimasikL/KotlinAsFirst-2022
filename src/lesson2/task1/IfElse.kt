@@ -149,14 +149,13 @@ fun rookOrBishopThreatens(
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int {
-    return when {
-        a + b < c || a + c < b || b + c < a -> -1
-        sqr(a) + sqr(b) < sqr(c) || sqr(a) + sqr(c) < sqr(b) || sqr(b) + sqr(c) < sqr(a) -> 2
-        sqr(a) + sqr(b) == sqr(c) || sqr(a) + sqr(c) == sqr(b) || sqr(b) + sqr(c) == sqr(a) -> 1
-        else -> 0
-    }
+fun triangleKind(a: Double, b: Double, c: Double): Int = when {
+    a + b < c || a + c < b || b + c < a -> -1
+    sqr(a) + sqr(b) < sqr(c) || sqr(a) + sqr(c) < sqr(b) || sqr(b) + sqr(c) < sqr(a) -> 2
+    sqr(a) + sqr(b) == sqr(c) || sqr(a) + sqr(c) == sqr(b) || sqr(b) + sqr(c) == sqr(a) -> 1
+    else -> 0
 }
+
 
 /**
  * Средняя (3 балла)
