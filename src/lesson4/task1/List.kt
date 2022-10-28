@@ -423,7 +423,7 @@ fun russian(n: Int): String {
             result += tenPlus[firstThree % 10]
         } else result += secNum[firstThree % 100 / 10]
         if (firstThree % 100 / 10 != 1) result += thousands[firstThree % 10]
-        else result += " " + thousandsforten[firstThree % 10]
+        else result += " " + thousandsforten[firstThree % 10 - 1]
         if (secondThree != 0) {
             result += " " + fNum[secondThree / 100]
             if (secondThree % 100 in 11..19) {
