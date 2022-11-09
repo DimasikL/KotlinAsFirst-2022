@@ -240,5 +240,16 @@ class Tests {
         assertEquals("двенадцать", russian(12))
         assertEquals("сто десять тысяч двести восемьдесят один", russian(110281))
         assertEquals("восемьсот сорок три тысячи семьсот девяносто", russian(843790))
+        assertEquals("девятьсот сорок", russian(940))
+        assertEquals("одна тысяча двадцать", russian(1020))
+        assertEquals("тридцать тысяч пятнадцать", russian(30015))
+        assertEquals("сто двадцать три тысячи четыреста пятьдесят", russian(123450))
+        assertEquals("пятьсот", russian(500))
+        assertEquals("двадцать", russian(20))
+        assertEquals("четыре", russian(4))
+        assertEquals("одна тысяча", russian(1000))
+        assertEquals("пятьсот тысяч", russian(500000))
+        assertEquals("двадцать одна тысяча", russian(21000))
+        assertEquals("сто двадцать три тысячи четыреста пятьдесят шесть", russian(123456))
     }
 }

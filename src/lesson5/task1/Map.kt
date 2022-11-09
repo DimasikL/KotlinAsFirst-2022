@@ -118,8 +118,7 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "z", "b" to "sweet")) -> true
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
-fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean =
-    if (a.isEmpty() && b.isEmpty()) true else if (a.isNotEmpty() && b.isNotEmpty()) b + a == a || b + a == b else false
+fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = b + a == b
 
 
 /**
@@ -238,8 +237,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean =
-    if (word.isEmpty() && chars.isEmpty()) true else if (word.isNotEmpty() && chars.isNotEmpty()) word.toSet() == chars.toSet() else false
+fun canBuildFrom(chars: List<Char>, word: String): Boolean = word.toSet() + chars.toSet() == chars.toSet()
 
 /**
  * Средняя (4 балла)

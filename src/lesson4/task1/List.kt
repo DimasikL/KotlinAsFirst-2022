@@ -412,27 +412,28 @@ fun russian(n: Int): String {
     )
     if (firstThree == 0) {
         result += fNum[secondThree / 100]
-        if (secondThree / 100 != 0) result += " "
+        if (secondThree / 100 != 0 && n % 100 != 0) result += " "
         if (secondThree % 100 in 11..19) {
             result += tenPlus[secondThree % 10]
         } else if (secondThree / 10 % 10 != 0) result += secNum[secondThree % 100 / 10]
-        if (secondThree % 100 / 10 != 1 ||
-            secondThree / 100 != 0
-        ) result += " " + lastNum[secondThree % 10]
+        if (secondThree / 10 % 10 == 1) "" else if (secondThree % 10 != 0 && n / 10 != 0) result += " "
+        if (secondThree % 100 / 10 != 1) result += lastNum[secondThree % 10]
     } else {
         result += fNum[firstThree / 100]
-        if (firstThree / 100 != 0) result += " "
+        if (firstThree / 10 % 10 != 0 && firstThree / 100 != 0) result += " "
         if (firstThree % 100 in 11..19) result += tenPlus[firstThree % 10]
         else if (firstThree / 10 % 10 != 0) result += secNum[firstThree % 100 / 10]
-        if (firstThree / 10 % 10 != 0) result += " "
+        if (firstThree / 10 != 0) result += " "
         if (firstThree % 100 / 10 != 1) result += thousands[firstThree % 10]
         else result += thousandsforten[firstThree % 10]
         if (secondThree != 0) {
-            result += " " + fNum[secondThree / 100]
+            if (secondThree / 100 != 0) result += " "
+            result += fNum[secondThree / 100]
+            if (secondThree / 10 % 10 != 0) result += " "
             if (secondThree % 100 in 11..19) {
-                result += " " + tenPlus[secondThree % 10]
-            } else if (secondThree / 10 % 10 != 0) result += " " + secNum[secondThree % 100 / 10]
-            if (secondThree % 10 != 0 && secondThree / 10 != 0) result += " "
+                result += tenPlus[secondThree % 10]
+            } else if (secondThree / 10 % 10 != 0) result += secNum[secondThree % 100 / 10]
+            if (secondThree / 10 % 10 == 1) "" else if (secondThree % 10 != 0) result += " "
             if (secondThree % 100 / 10 != 1) result += lastNum[secondThree % 10]
         }
     }
