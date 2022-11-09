@@ -398,18 +398,6 @@ fun russian(n: Int): String {
         "восемь тысяч",
         "девять тысяч"
     )
-    val thousandsforten = listOf(
-        "тысяч",
-        "тысяча",
-        "тысячи",
-        "тысячи",
-        "тысячи",
-        "тысяч",
-        "тысяч",
-        "тысяч",
-        "тысяч",
-        "тысяч"
-    )
     if (firstThree == 0) {
         result += fNum[secondThree / 100]
         if (secondThree / 100 != 0 && n % 100 != 0) result += " "
@@ -425,7 +413,7 @@ fun russian(n: Int): String {
         else if (firstThree / 10 % 10 != 0) result += secNum[firstThree % 100 / 10]
         if (firstThree / 10 != 0) result += " "
         if (firstThree % 100 / 10 != 1) result += thousands[firstThree % 10]
-        else result += thousandsforten[firstThree % 10]
+        else result += "тысяч"
         if (secondThree != 0) {
             if (secondThree / 100 != 0) result += " "
             result += fNum[secondThree / 100]
