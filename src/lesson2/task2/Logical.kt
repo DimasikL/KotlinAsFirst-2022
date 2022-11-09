@@ -76,9 +76,5 @@ fun circleInside(
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
     val minNum = minOf(a, b, c)
     val mean = a + b + c - minNum - maxOf(a, b, c)
-    return when {
-        (minNum <= r && mean <= s) || (minNum <= s && mean <= r) -> true
-        else -> false
-    }
-
+    return (minNum <= r && mean <= s) || (minNum <= s && mean <= r)
 }
