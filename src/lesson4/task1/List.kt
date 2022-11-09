@@ -4,7 +4,6 @@ package lesson4.task1
 
 import lesson1.task1.discriminant
 import lesson3.task1.isPrime
-import lesson3.task1.revert
 import kotlin.math.sqrt
 import kotlin.math.pow
 
@@ -348,32 +347,32 @@ fun roman(n: Int): String {
 fun russian(n: Int): String {
     var result = ""
     val firstThree = n / 1000
-    var secondThree = n % 1000
+    val secondThree = n % 1000
     val lastNum = listOf("", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
     val secNum = listOf(
         "",
         "десять",
-        "двадцать ",
-        "тридцать ",
-        "сорок ",
-        "пятьдесят ",
-        "шестьдесят ",
-        "семьдесят ",
-        "восемьдесят ",
-        "девяносто "
+        "двадцать",
+        "тридцать",
+        "сорок",
+        "пятьдесят",
+        "шестьдесят",
+        "семьдесят",
+        "восемьдесят",
+        "девяносто"
     )
     val fNum =
         listOf(
             "",
-            "сто ",
-            "двести ",
-            "триста ",
-            "четыреста ",
-            "пятьсот ",
-            "шестьсот ",
-            "семьсот ",
-            "восемьсот ",
-            "девятьсот "
+            "сто",
+            "двести",
+            "триста",
+            "четыреста",
+            "пятьсот",
+            "шестьсот",
+            "семьсот",
+            "восемьсот",
+            "девятьсот"
         )
     val tenPlus = listOf(
         "",
@@ -413,22 +412,27 @@ fun russian(n: Int): String {
     )
     if (firstThree == 0) {
         result += fNum[secondThree / 100]
+        if (secondThree / 100 != 0) result += " "
         if (secondThree % 100 in 11..19) {
             result += tenPlus[secondThree % 10]
-        } else result += secNum[secondThree % 100 / 10]
-        if (secondThree % 100 / 10 != 1) result += lastNum[secondThree % 10]
+        } else if (secondThree / 10 % 10 != 0) result += secNum[secondThree % 100 / 10]
+        if (secondThree % 100 / 10 != 1 ||
+            secondThree / 100 != 0
+        ) result += " " + lastNum[secondThree % 10]
     } else {
         result += fNum[firstThree / 100]
-        if (firstThree % 100 in 11..19) {
-            result += tenPlus[firstThree % 10]
-        } else result += secNum[firstThree % 100 / 10]
+        if (firstThree / 100 != 0) result += " "
+        if (firstThree % 100 in 11..19) result += tenPlus[firstThree % 10]
+        else if (firstThree / 10 % 10 != 0) result += secNum[firstThree % 100 / 10]
+        if (firstThree / 10 % 10 != 0) result += " "
         if (firstThree % 100 / 10 != 1) result += thousands[firstThree % 10]
-        else result += " " + thousandsforten[firstThree % 10]
+        else result += thousandsforten[firstThree % 10]
         if (secondThree != 0) {
             result += " " + fNum[secondThree / 100]
             if (secondThree % 100 in 11..19) {
-                result += tenPlus[secondThree % 10]
-            } else result += secNum[secondThree % 100 / 10]
+                result += " " + tenPlus[secondThree % 10]
+            } else if (secondThree / 10 % 10 != 0) result += " " + secNum[secondThree % 100 / 10]
+            if (secondThree % 10 != 0 && secondThree / 10 != 0) result += " "
             if (secondThree % 100 / 10 != 1) result += lastNum[secondThree % 10]
         }
     }

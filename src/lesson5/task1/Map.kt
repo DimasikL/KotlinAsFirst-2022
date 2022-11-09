@@ -119,7 +119,7 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
 fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean =
-    if (a.isNotEmpty() && b.isNotEmpty()) b + a == a || b + a == b else false
+    if (a.isEmpty() && b.isEmpty()) true else if (a.isNotEmpty() && b.isNotEmpty()) b + a == a || b + a == b else false
 
 
 /**
@@ -187,16 +187,14 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *   averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 200.0, "NFLX" to 40.0))
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
-fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
-    return buildMap {
-        for ((stock, price) in stockPrices) {
-            if (!containsKey(stock)) this[stock] = price
-            else this[stock] = this[stock]!!.plus(price)
-        }
-        if (this.isEmpty()) return mapOf()
-        for (stock in this.keys) {
-            this[stock] = this[stock]!! / stockPrices.count { it.first == stock }
-        }
+fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> = buildMap {
+    for ((stock, price) in stockPrices) {
+        if (!containsKey(stock)) this[stock] = price
+        else this[stock] = this[stock]!!.plus(price)
+    }
+    if (this.isEmpty()) return mapOf()
+    for (stock in this.keys) {
+        this[stock] = this[stock]!! / stockPrices.count { it.first == stock }
     }
 }
 
@@ -241,7 +239,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
 fun canBuildFrom(chars: List<Char>, word: String): Boolean =
-    if (word.isNotEmpty() && chars.isNotEmpty()) word.toSet() == chars.toSet() else false
+    if (word.isEmpty() && chars.isEmpty()) true else if (word.isNotEmpty() && chars.isNotEmpty()) word.toSet() == chars.toSet() else false
 
 /**
  * Средняя (4 балла)
