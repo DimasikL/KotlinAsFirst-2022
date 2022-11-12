@@ -143,7 +143,6 @@ fun dateDigitToStr(digital: String): String {
     val result: String
     val parts = digital.split(".")
     return try {
-        if (parts[1].toInt() > 12) return ""
         val month = months[parts[1].toInt()]
         result = if (parts.size == 3 && daysInMonth(
                 parts[1].toInt(),
@@ -153,6 +152,8 @@ fun dateDigitToStr(digital: String): String {
         else ""
         result
     } catch (parts: NumberFormatException) {
+        ""
+    } catch (result: java.lang.IndexOutOfBoundsException){
         ""
     }
 }
@@ -282,7 +283,7 @@ fun mostExpensive(description: String): String {
     val newDescr = description.replace(";", "").split(" ")
     for (i in 1 until newDescr.size step 2) {
         if (newDescr[i].toDouble() == 0.0) return "Any good with price 0.0"
-        if (newDescr[i].toDouble() >= max) {
+        else if (newDescr[i].toDouble() >= max) {
             max = newDescr[i].toDouble()
             nameMax = newDescr[i - 1]
         }
