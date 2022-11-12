@@ -98,14 +98,14 @@ fun dateStrToDigit(str: String): String {
         val month =
             if (months.indexOf(parts[1]) in 0..9) "0${months.indexOf(parts[1])}" else "${months.indexOf(parts[1])}"
         val num =
-            if (parts[0].toInt() in 0..9) "0${parts[0]}" else parts[0]
+            if (parts[0].length != 2) "0${parts[0]}" else parts[0]
         val result = when {
             month.toInt() == -1 -> ""
             parts.size != 3 -> ""
             daysInMonth(month.toInt(), parts[2].toInt()) >= parts[0].toInt()
             -> "$num.$month.${parts[2]}"
 
-            else  -> ""
+            else -> ""
         }
         return result
     } catch (month: IndexOutOfBoundsException) {
@@ -142,6 +142,7 @@ fun dateDigitToStr(digital: String): String {
     val result: String
     val parts = digital.split(".")
     return try {
+        if (parts[1].toInt() > 12) return ""
         val month = months[parts[1].toInt()]
         result = if (parts.size == 3 && daysInMonth(
                 parts[1].toInt(),
@@ -279,6 +280,7 @@ fun mostExpensive(description: String): String {
     var nameMax = ""
     val newDescr = description.replace(";", "").split(" ")
     for (i in 1 until newDescr.size step 2) {
+        if (newDescr[i].toDouble() == 0.0) return "Any good with price 0.0"
         if (newDescr[i].toDouble() > max) {
             max = newDescr[i].toDouble()
             nameMax = newDescr[i - 1]
