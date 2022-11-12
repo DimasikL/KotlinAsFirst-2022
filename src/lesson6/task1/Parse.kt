@@ -124,6 +124,7 @@ fun dateStrToDigit(str: String): String {
  * входными данными.
  */
 fun dateDigitToStr(digital: String): String {
+    if (digital == "") return ""
     val months = listOf(
         "",
         "января",
@@ -281,7 +282,7 @@ fun mostExpensive(description: String): String {
     val newDescr = description.replace(";", "").split(" ")
     for (i in 1 until newDescr.size step 2) {
         if (newDescr[i].toDouble() == 0.0) return "Any good with price 0.0"
-        if (newDescr[i].toDouble() > max) {
+        if (newDescr[i].toDouble() >= max) {
             max = newDescr[i].toDouble()
             nameMax = newDescr[i - 1]
         }
