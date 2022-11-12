@@ -105,7 +105,7 @@ fun dateStrToDigit(str: String): String {
             daysInMonth(month.toInt(), parts[2].toInt()) >= parts[0].toInt()
             -> "$num.$month.${parts[2]}"
 
-            else -> ""
+            else  -> ""
         }
         return result
     } catch (month: IndexOutOfBoundsException) {
