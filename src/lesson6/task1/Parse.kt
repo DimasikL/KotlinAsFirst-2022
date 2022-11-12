@@ -2,6 +2,9 @@
 
 package lesson6.task1
 
+import lesson2.task2.daysInMonth
+import java.lang.IllegalArgumentException
+
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
 // Рекомендуемое количество баллов = 11
@@ -74,7 +77,41 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val months = listOf(
+        "",
+        "января",
+        "февраля",
+        "марта",
+        "апреля",
+        "мая",
+        "июня",
+        "июля",
+        "августа",
+        "сентября",
+        "октября",
+        "ноября",
+        "декабря"
+    )
+    val parts = str.split(" ")
+    return try {
+        val month =
+            if (months.indexOf(parts[1]) in 0..9) "0${months.indexOf(parts[1])}" else "${months.indexOf(parts[1])}"
+        val num =
+            if (parts[0].toInt() in 0..9) "0${parts[0]}" else parts[0]
+        val result = when {
+            month.toInt() == -1 -> ""
+            parts.size != 3 -> ""
+            daysInMonth(month.toInt(), parts[2].toInt()) >= parts[0].toInt()
+            -> "$num.$month.${parts[2]}"
+
+            else -> ""
+        }
+        return result
+    } catch (month: IndexOutOfBoundsException) {
+        ""
+    }
+}
 
 /**
  * Средняя (4 балла)
@@ -86,7 +123,37 @@ fun dateStrToDigit(str: String): String = TODO()
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val months = listOf(
+        "",
+        "января",
+        "февраля",
+        "марта",
+        "апреля",
+        "мая",
+        "июня",
+        "июля",
+        "августа",
+        "сентября",
+        "октября",
+        "ноября",
+        "декабря"
+    )
+    val result: String
+    val parts = digital.split(".")
+    return try {
+        val month = months[parts[1].toInt()]
+        result = if (parts.size == 3 && daysInMonth(
+                parts[1].toInt(),
+                parts[2].toInt()
+            ) >= parts[0].toInt() && month != ""
+        ) "${parts[0].toInt()} $month ${parts[2]}"
+        else ""
+        result
+    } catch (parts: NumberFormatException) {
+        ""
+    }
+}
 
 /**
  * Средняя (4 балла)
@@ -102,7 +169,11 @@ fun dateDigitToStr(digital: String): String = TODO()
  *
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String {
+    val newPhone = phone.replace("[ -]".toRegex(), "")
+    if (!newPhone.matches(Regex("""(\+\d+)?(\(\d+\))?\d+"""))) return ""
+    return newPhone.replace("[()]".toRegex(), "")
+}
 
 /**
  * Средняя (5 баллов)
@@ -114,7 +185,17 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    val onlyNum = jumps.replace("[% -]".toRegex(), "")
+    val result = onlyNum.all {
+        it.isDigit()
+    }
+    return when {
+        onlyNum == "" -> -1
+        !result -> -1
+        else -> onlyNum.chunked(3).toList().max().toInt()
+    }
+}
 
 /**
  * Сложная (6 баллов)
@@ -127,7 +208,18 @@ fun bestLongJump(jumps: String): Int = TODO()
  * При нарушении формата входной строки, а также в случае отсутствия удачных попыток,
  * вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Any {
+    if (!jumps.matches(Regex("""(\d+ [+%-]+\s?)+"""))) return -1
+    val newJumps = jumps.split(" ")
+    var num = 0
+    var count = 1
+    do {
+        if ("+" in newJumps[count]) num = newJumps[count - 1].toInt()
+        count += 2
+    } while (newJumps.size > count)
+    return num
+}
+
 
 /**
  * Сложная (6 баллов)
@@ -138,7 +230,18 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    if (!expression.matches(Regex("""\d+( [+-] \d+)*"""))) throw IllegalArgumentException()
+    val newExpression = expression.split(" ")
+    var num = newExpression.first().toInt()
+    var i = 1
+    while (i < newExpression.size) {
+        if (newExpression[i] == "+") num += newExpression[i + 1].toInt()
+        else if (newExpression[i] == "-") num -= newExpression[i + 1].toInt()
+        i += 2
+    }
+    return num
+}
 
 /**
  * Сложная (6 баллов)
@@ -149,7 +252,15 @@ fun plusMinus(expression: String): Int = TODO()
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+fun firstDuplicateIndex(str: String): Int {
+    val newStr = str.split(" ").map { it.lowercase() }
+    var anw = 0
+    for (i in 0..newStr.size - 2) {
+        if (newStr[i] == newStr[i + 1]) return anw
+        anw += newStr[i].length + 1
+    }
+    return -1
+}
 
 /**
  * Сложная (6 баллов)
@@ -162,7 +273,19 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше нуля либо равны нулю.
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String {
+    if (description.matches(Regex("""(А-я)+ (; (0-9.))"""))) return ""
+    var max = 0.0
+    var nameMax = ""
+    val newDescr = description.replace(";", "").split(" ")
+    for (i in 1 until newDescr.size step 2) {
+        if (newDescr[i].toDouble() > max) {
+            max = newDescr[i].toDouble()
+            nameMax = newDescr[i - 1]
+        }
+    }
+    return nameMax
+}
 
 /**
  * Сложная (6 баллов)
@@ -176,6 +299,7 @@ fun mostExpensive(description: String): String = TODO()
  * Вернуть -1, если roman не является корректным римским числом
  */
 fun fromRoman(roman: String): Int = TODO()
+
 
 /**
  * Очень сложная (7 баллов)
@@ -211,6 +335,7 @@ fun fromRoman(roman: String): Int = TODO()
  * то есть если в программе присутствует некорректный символ или непарная скобка, то должно быть выброшено
  * IllegalArgumentException.
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
+ *
  *
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
