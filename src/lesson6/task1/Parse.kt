@@ -304,7 +304,6 @@ fun mostExpensive(description: String): String {
  */
 fun fromRoman(roman: String): Int = TODO()
 
-
 /**
  * Очень сложная (7 баллов)
  *
