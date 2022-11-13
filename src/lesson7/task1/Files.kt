@@ -86,12 +86,7 @@ fun deleteMarked(inputName: String, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> =
-    substrings.associateWith { sub ->
-        File(inputName).readLines().joinToString().lowercase().windowed(
-            sub.length
-        ).count() { it == sub.lowercase() }
-    }
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()
 
 
 /**
