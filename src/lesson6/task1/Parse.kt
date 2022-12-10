@@ -277,13 +277,14 @@ fun mostExpensive(description: String): String {
     var nameMax = ""
     val newDescr = description.replace(";", "").split(" ")
     for (i in 1 until newDescr.size step 2) {
-        if (newDescr[i].toDouble() == 0.0) return "Any good with price 0.0"
-        else if (newDescr[i].toDouble() >= max) {
+        if (newDescr[i].toDouble() == 0.0) {
+            return "Any good with price 0.0"
+        } else if (newDescr[i].toDouble() >= max) {
             max = newDescr[i].toDouble()
             nameMax = newDescr[i - 1]
         }
     }
-    return nameMax
+    return if (nameMax == "Unknown good Any good with price 0.0") "Any good with price 0.0" else nameMax
 }
 
 /**
@@ -309,7 +310,7 @@ fun fromRoman(roman: String): Int {
             base = base.substring(i.length)
         }
     }
-    return ans
+    return if (ans == 0) -1 else ans
 }
 
 /**

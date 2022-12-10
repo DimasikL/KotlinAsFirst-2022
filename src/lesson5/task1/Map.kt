@@ -228,8 +228,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
             answer = num
             name = key
         }
-    if (name == "") return null
-    return name
+    return if (kind == "") "" else if (name == "") null else name
 }
 
 /**
