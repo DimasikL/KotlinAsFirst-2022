@@ -230,7 +230,7 @@ class Tests {
             )
         )
         assertEquals(
-            null,
+            "",
             findCheapestStuff(
                 mapOf("" to ("" to 0.0)),
                 ""

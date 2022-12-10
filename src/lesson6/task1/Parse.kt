@@ -310,7 +310,7 @@ fun fromRoman(roman: String): Int {
             base = base.substring(i.length)
         }
     }
-    return ans
+    return if (ans == 0 ) -1 else ans
 }
 
 /**
