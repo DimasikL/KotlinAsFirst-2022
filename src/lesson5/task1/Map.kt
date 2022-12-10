@@ -240,7 +240,9 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean = word.toLowerCase().toSet() + chars.toString().toLowerCase().toSet() == chars.toString().toLowerCase().toSet()
+fun canBuildFrom(chars: List<Char>, word: String): Boolean =
+    if (!word.matches(Regex("""[A-zА-я]*"""))) false else word.toLowerCase().toSet() + chars.toString().toLowerCase()
+        .toSet() == chars.toString().toLowerCase().toSet()
 
 /**
  * Средняя (4 балла)
