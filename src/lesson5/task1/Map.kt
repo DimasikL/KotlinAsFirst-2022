@@ -5,6 +5,7 @@ package lesson5.task1
 import ru.spbstu.wheels.sorted
 import kotlin.math.max
 
+
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
 // Рекомендуемое количество баллов = 9
@@ -148,7 +149,7 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): MutableMa
  * В выходном списке не должно быть повторяющихся элементов,
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
-fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = a.intersect(b).toList()
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = a.intersect(b.toSet()).toList()
 
 
 /**
@@ -186,15 +187,18 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *   averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 200.0, "NFLX" to 40.0))
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
-fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> = buildMap {
+fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
+    val th = mutableMapOf<String, MutableList<Double>>()
     for ((stock, price) in stockPrices) {
-        if (!containsKey(stock)) this[stock] = price
-        else this[stock] = this[stock]!!.plus(price)
+        if (!th.containsKey(stock)) th[stock] = mutableListOf(price)
+        else th[stock]?.add(price)
     }
-    if (this.isEmpty()) return mapOf()
-    for (stock in this.keys) {
-        this[stock] = this[stock]!! / stockPrices.count { it.first == stock }
+    val res = mutableMapOf<String, Double>()
+    if (th.isEmpty()) return mapOf()
+    for (stock in th.keys) {
+        res[stock] = th[stock]!!.sum() / th[stock]!!.size
     }
+    return res
 }
 
 /**
@@ -218,13 +222,13 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
         if (num.first == kind) reWriteMap[key] = num.second
     }
     var answer = Double.POSITIVE_INFINITY
-    var name = null.toString()
+    var name = ""
     for ((key, num) in reWriteMap)
         if (num <= answer) {
             answer = num
             name = key
         }
-    if (name == null.toString()) return null
+    if (name == "") return null
     return name
 }
 
@@ -311,7 +315,7 @@ fun hasAnagrams(words: List<String>): Boolean {
  */
 fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> {
     val endAns = friends.toMutableMap()
-    for ((key, value) in friends) {
+    for ((_, value) in friends) {
         for (i in value) {
             if (i !in endAns) endAns[i] = mutableSetOf()
         }

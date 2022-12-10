@@ -345,7 +345,6 @@ fun roman(n: Int): String {
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 fun russian(n: Int): String {
-    var result = ""
     val firstThree = n / 1000
     val secondThree = n % 1000
     val lastNum = listOf("", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
@@ -398,32 +397,33 @@ fun russian(n: Int): String {
         "восемь тысяч",
         "девять тысяч"
     )
-    if (firstThree == 0) {
-        result += fNum[secondThree / 100]
-        if (secondThree / 100 != 0 && n % 100 != 0) result += " "
-        if (secondThree % 100 in 11..19) {
-            result += tenPlus[secondThree % 10]
-        } else if (secondThree / 10 % 10 != 0) result += secNum[secondThree % 100 / 10]
-        if (secondThree / 10 % 10 == 1) "" else if (secondThree % 10 != 0 && n / 10 != 0) result += " "
-        if (secondThree % 100 / 10 != 1) result += lastNum[secondThree % 10]
-    } else {
-        result += fNum[firstThree / 100]
-        if (firstThree / 10 % 10 != 0 && firstThree / 100 != 0) result += " "
-        if (firstThree % 100 in 11..19) result += tenPlus[firstThree % 10]
-        else if (firstThree / 10 % 10 != 0) result += secNum[firstThree % 100 / 10]
-        if (firstThree / 10 != 0) result += " "
-        if (firstThree % 100 / 10 != 1) result += thousands[firstThree % 10]
-        else result += "тысяч"
-        if (secondThree != 0) {
-            if (secondThree / 100 != 0) result += " "
-            result += fNum[secondThree / 100]
-            if (secondThree / 10 % 10 != 0) result += " "
+    return buildString {
+        if (firstThree == 0) {
+            append(fNum[secondThree / 100])
+            if (secondThree / 100 != 0 && n % 100 != 0) append(" ")
             if (secondThree % 100 in 11..19) {
-                result += tenPlus[secondThree % 10]
-            } else if (secondThree / 10 % 10 != 0) result += secNum[secondThree % 100 / 10]
-            if (secondThree / 10 % 10 == 1) "" else if (secondThree % 10 != 0) result += " "
-            if (secondThree % 100 / 10 != 1) result += lastNum[secondThree % 10]
+                append(tenPlus[secondThree % 10])
+            } else if (secondThree / 10 % 10 != 0) append(secNum[secondThree % 100 / 10])
+            if (secondThree / 10 % 10 == 1) "" else if (secondThree % 10 != 0 && n / 10 != 0) append(" ")
+            if (secondThree % 100 / 10 != 1) append(lastNum[secondThree % 10])
+        } else {
+            append(fNum[firstThree / 100])
+            if (firstThree / 10 % 10 != 0 && firstThree / 100 != 0) append(" ")
+            if (firstThree % 100 in 11..19) append(tenPlus[firstThree % 10])
+            else if (firstThree / 10 % 10 != 0) append(secNum[firstThree % 100 / 10])
+            if (firstThree / 10 != 0) append(" ")
+            if (firstThree % 100 / 10 != 1) append(thousands[firstThree % 10])
+            else append("тысяч")
+            if (secondThree != 0) {
+                if (secondThree / 100 != 0) append(" ")
+                append(fNum[secondThree / 100])
+                if (secondThree / 10 % 10 != 0) append(" ")
+                if (secondThree % 100 in 11..19) {
+                    append(tenPlus[secondThree % 10])
+                } else if (secondThree / 10 % 10 != 0) append(secNum[secondThree % 100 / 10])
+                if (secondThree / 10 % 10 == 1) "" else if (secondThree % 10 != 0) append(" ")
+                if (secondThree % 100 / 10 != 1) append(lastNum[secondThree % 10])
+            }
         }
     }
-    return result
 }

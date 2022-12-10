@@ -86,7 +86,10 @@ fun deleteMarked(inputName: String, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
+    val file = File(inputName).readLines().joinToString().lowercase()
+    return substrings.associateWith { sub -> file.windowed(sub.length).count { it == sub.lowercase() } }
+}
 
 
 /**
@@ -103,7 +106,18 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  *
  */
 fun sibilants(inputName: String, outputName: String) {
-    TODO()
+    val thlet = setOf('Ж', 'ж', 'Ч', 'ч', 'Ш', 'ш', 'Щ', 'щ')
+    val thnxlet = setOf('Ы', 'ы', 'Я', 'я', 'Ю', 'ю')
+    val rule = mapOf('Ы' to 'И', 'Я' to 'А', 'Ю' to 'У', 'ы' to 'и', 'я' to 'а', 'ю' to 'у')
+    val file = File(inputName).readText()
+    File(outputName).bufferedWriter().use {
+        if (file.isNotEmpty()) it.write(file[0].toString())
+        for (i in 1 until file.length) {
+            if (file[i - 1] in thlet && file[i] in thnxlet) {
+                it.write(rule.getValue(file[i]).toString())
+            } else it.write(file[i].toString())
+        }
+    }
 }
 
 /**
@@ -124,7 +138,18 @@ fun sibilants(inputName: String, outputName: String) {
  *
  */
 fun centerFile(inputName: String, outputName: String) {
-    TODO()
+    val file = File(inputName).readLines().map { it.trim() }
+    var maxLir = 0
+    File(outputName).bufferedWriter().use {
+        for (i in file) {
+            if (i.length > maxLir) maxLir = i.length
+        }
+        for (i in file) {
+            for (h in 0 until (maxLir - i.length) / 2) it.write(" ")
+            it.write(i)
+            it.newLine()
+        }
+    }
 }
 
 /**

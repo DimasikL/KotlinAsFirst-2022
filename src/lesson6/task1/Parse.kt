@@ -3,7 +3,8 @@
 package lesson6.task1
 
 import lesson2.task2.daysInMonth
-import java.lang.IllegalArgumentException
+import kotlin.IllegalArgumentException
+
 
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
@@ -153,7 +154,7 @@ fun dateDigitToStr(digital: String): String {
         result
     } catch (parts: NumberFormatException) {
         ""
-    } catch (result: java.lang.IndexOutOfBoundsException){
+    } catch (result: java.lang.IndexOutOfBoundsException) {
         ""
     }
 }
@@ -178,6 +179,7 @@ fun flattenPhoneNumber(phone: String): String {
     return newPhone.replace("[()]".toRegex(), "")
 }
 
+
 /**
  * Средняя (5 баллов)
  *
@@ -188,16 +190,9 @@ fun flattenPhoneNumber(phone: String): String {
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int {
-    val onlyNum = jumps.replace("[% -]".toRegex(), "")
-    val result = onlyNum.all {
-        it.isDigit()
-    }
-    return when {
-        onlyNum == "" -> -1
-        !result -> -1
-        else -> onlyNum.chunked(3).toList().max().toInt()
-    }
+fun bestLongJump(jumps: String): Any {
+    if (!jumps.matches(Regex("""([0-9]+[0-9 %-]+)"""))) return -1
+    return jumps.replace("[%-]".toRegex(), " ").split(" ").map { it.trim() }.max().toInt()
 }
 
 /**
@@ -277,7 +272,7 @@ fun firstDuplicateIndex(str: String): Int {
  * Все цены должны быть больше нуля либо равны нулю.
  */
 fun mostExpensive(description: String): String {
-    if (description.matches(Regex("""(А-я)+ (; (0-9.))"""))) return ""
+    if (description.matches(Regex("""((А-я)+ (0-9\.)+)+"""))) return ""
     var max = 0.0
     var nameMax = ""
     val newDescr = description.replace(";", "").split(" ")
@@ -302,7 +297,20 @@ fun mostExpensive(description: String): String {
  *
  * Вернуть -1, если roman не является корректным римским числом
  */
-fun fromRoman(roman: String): Int = TODO()
+fun fromRoman(roman: String): Int {
+    if (!roman.matches(Regex("""C?M{0,3}C{0,3}M?D?X?C{0,3}L?I?X{0,3}C?I{0,3}V?I{0,3}"""))) return -1
+    var base = roman
+    val rome = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
+    val arab = listOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
+    var ans = 0
+    for (i in rome) {
+        while (base.startsWith(i)) {
+            ans += arab[rome.indexOf(i)]
+            base = base.substring(i.length)
+        }
+    }
+    return ans
+}
 
 /**
  * Очень сложная (7 баллов)
