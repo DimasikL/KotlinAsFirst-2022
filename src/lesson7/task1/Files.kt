@@ -180,29 +180,33 @@ fun centerFile(inputName: String, outputName: String) {
  * 8) Если входной файл удовлетворяет требованиям 1-7, то он должен быть в точности идентичен выходному файлу
  */
 fun alignFileByWidth(inputName: String, outputName: String) {
-    val output = File(outputName).bufferedWriter()
-    var maxSize = 0
-    val file = File(inputName).readLines().map { it.trim() }
-    for (i in file) {
-        if (i.length > maxSize) maxSize = i.length
-    }
-    for (line in file) {
-        var numSpaces = maxSize - line.length
-        var i = 0
-        val word = line.trim().split(" ").toMutableList()
-        if (word.size == 1) word[i]
-        else while (numSpaces > 0) {
-            word[i] += " "
-            if (i < word.size - 2) i++
-            else
-                i = 0
-            numSpaces--
+    File(outputName).bufferedWriter().use { back ->
+        var max = 0
+        val file = File(inputName).readLines().map { it.trim() }
+        if (file.isEmpty()) back.write("")
+        else {
+            for (i in file) {
+                if (i.length > max) max = i.length
+            }
+            for (line in file) {
+                val words = line.split(Regex("""\s+""")).toMutableList()
+                if (words.size == 1) {
+                    back.write(line)
+                    back.newLine()
+                } else if (line.isNotBlank()) {
+                    val numToOne = 1 + (max - line.length) / words.lastIndex
+                    val surplus = (max - line.length) % words.lastIndex
+                    for (i in 0 until words.lastIndex) {
+                        words[i] += " ".repeat(if (i < surplus) numToOne + 1 else numToOne)
+                    }
+                    back.write(words.joinToString(""))
+                    back.newLine()
+                }
+            }
         }
-        output.write(word.joinToString(" "))
-        output.newLine()
     }
-    output.close()
 }
+
 
 /**
  * Средняя (14 баллов)
