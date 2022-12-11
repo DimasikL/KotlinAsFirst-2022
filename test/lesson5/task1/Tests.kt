@@ -236,6 +236,13 @@ class Tests {
                 ""
             )
         )
+        assertEquals(
+            null,
+            findCheapestStuff(
+                mapOf("" to ("a" to 0.0)),
+                ""
+            )
+        )
     }
 
     @Test

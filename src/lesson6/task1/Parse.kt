@@ -277,14 +277,12 @@ fun mostExpensive(description: String): String {
     var nameMax = ""
     val newDescr = description.replace(";", "").split(" ")
     for (i in 1 until newDescr.size step 2) {
-        if (newDescr[i].toDouble() == 0.0) {
-            return "Any good with price 0.0"
-        } else if (newDescr[i].toDouble() >= max) {
+        if (newDescr[i].toDouble() >= max) {
             max = newDescr[i].toDouble()
             nameMax = newDescr[i - 1]
         }
     }
-    return if (nameMax == "Unknown good Any good with price 0.0") "Any good with price 0.0" else nameMax
+    return if (max == 0.0 && description.isNotEmpty()) "Any good with price 0.0" else nameMax
 }
 
 /**
@@ -299,18 +297,19 @@ fun mostExpensive(description: String): String {
  * Вернуть -1, если roman не является корректным римским числом
  */
 fun fromRoman(roman: String): Int {
-    if (!roman.matches(Regex("""C?M{0,3}C{0,3}M?D?X?C{0,3}L?I?X{0,3}C?I{0,3}V?I{0,3}"""))) return -1
+    if (!roman.matches(Regex("""C?M{0,3}C{0,3}M?D?X?C{0,3}L?I?X{0,3}C?I{0,3}X?V?I{0,3}"""))) return -1
     var base = roman
     val rome = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
     val arab = listOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
     var ans = 0
+    if (base == "") return -1
     for (i in rome) {
         while (base.startsWith(i)) {
             ans += arab[rome.indexOf(i)]
             base = base.substring(i.length)
         }
     }
-    return if (ans == 0 ) -1 else ans
+    return ans
 }
 
 /**
