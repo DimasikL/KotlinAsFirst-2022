@@ -1,9 +1,9 @@
 @file:Suppress("UNUSED_PARAMETER")
 
-package lesson10.lesson9.task2
+package lesson9.task2
 
-import lesson10.lesson9.task1.Matrix
-import lesson10.lesson9.task1.createMatrix
+import lesson9.task1.Matrix
+import lesson9.task1.createMatrix
 
 // Все задачи в этом файле требуют наличия реализации интерфейса "Матрица" в Matrix.kt
 
