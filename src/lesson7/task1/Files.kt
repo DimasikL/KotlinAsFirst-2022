@@ -182,7 +182,7 @@ fun centerFile(inputName: String, outputName: String) {
 fun alignFileByWidth(inputName: String, outputName: String) {
     File(outputName).bufferedWriter().use { back ->
         var max = 0
-        val file = File(inputName).readLines().map { it.trim() }
+        val file = File(inputName).readText().split("\n").map { it.trim() }
         if (file.isEmpty()) back.write("")
         else {
             for (i in file) {
@@ -343,7 +343,7 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
-    TODO()
+
 }
 
 /**
