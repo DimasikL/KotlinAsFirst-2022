@@ -205,29 +205,6 @@ fun alignFileByWidth(inputName: String, outputName: String) {
     }
 }
 
-//        val file = File(inputName).readText().replace(Regex("""\s+"""), " ").map { it.trim() }
-//        if (file.isEmpty()) back.write("")
-//        else {
-//            for (i in file) {
-//                if (i.length > max) max = i.length
-//            }
-//            for (line in file) {
-//                val words = line.split(" ").toMutableList()
-//                if (words.size == 1) {
-//                    back.write(line)
-//                    back.newLine()
-//                } else if (line.isNotBlank()) {
-//                    val numToOne = 1 + (max - line.length) / words.lastIndex
-//                    val surplus = (max - line.length) % words.lastIndex
-//                    for (i in 0 until words.lastIndex) {
-//                        words[i] += " ".repeat(if (i < surplus) numToOne + 1 else numToOne)
-//                    }
-//                    back.write(words.joinToString(""))
-//                    back.newLine()
-//                }
-//            }
-//        }
-
 
 /**
  * Средняя (14 баллов)
@@ -249,12 +226,12 @@ fun alignFileByWidth(inputName: String, outputName: String) {
  * Ключи в ассоциативном массиве должны быть в нижнем регистре.
  *
  */
-fun top20Words(inputName: String): Map<String, Int> {
-    val checkOf = """[a-zа-яё]+""".toRegex().findAll(File(inputName).readText().lowercase())
-    val counting = checkOf.map { it.value }.groupBy { it }.map { it.key to it.value.count() }
-    val sortedCounting = counting.sortedByDescending { (_, v) -> v }.toMap()
-    return if (sortedCounting.size < 21) sortedCounting else sortedCounting.filterValues { it >= sortedCounting.values.toList()[20] }
-}
+fun top20Words(inputName: String): Map<String, Int> = TODO()
+//    val checkOf = """[a-zа-яё]+""".toRegex().findAll(File(inputName).readText().lowercase())
+//    val counting = checkOf.map { it.value }.groupBy { it }.map { it.key to it.value.count() }
+//    val sortedCounting = counting.sortedByDescending { (_, v) -> v }.toMap()
+//    return if (sortedCounting.size < 21) sortedCounting else sortedCounting.filterValues { it >= sortedCounting.values.toList()[20] }
+
 
 /**
  * Средняя (14 баллов)
