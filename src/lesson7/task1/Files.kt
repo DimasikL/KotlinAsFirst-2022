@@ -2,6 +2,7 @@
 
 package lesson7.task1
 
+import ru.spbstu.wheels.NullableMonad.filter
 import java.io.File
 
 // Урок 7: работа с файлами
@@ -181,23 +182,20 @@ fun centerFile(inputName: String, outputName: String) {
  */
 fun alignFileByWidth(inputName: String, outputName: String) {
     File(outputName).bufferedWriter().use { back ->
-        var max = 0
-        val file = File(inputName).readText().split("\n").map { it.trim() }
-        if (file.isEmpty()) back.write("")
-        else {
-            for (i in file) {
-                if (i.length > max) max = i.length
-            }
+        val file = File(inputName).readLines().map { it.trim().replace(Regex("""\s+"""), " ") }
+        val max = file.maxOfOrNull { it.length }
+        if (max != null) {
             for (line in file) {
-                val words = line.split(Regex("""\s+""")).toMutableList()
+                val words = line.split(" ").toMutableList()
                 if (words.size == 1) {
                     back.write(line)
                     back.newLine()
                 } else if (line.isNotBlank()) {
                     val numToOne = 1 + (max - line.length) / words.lastIndex
-                    val surplus = (max - line.length) % words.lastIndex
+                    var surplus = (max - line.length) % words.lastIndex
                     for (i in 0 until words.lastIndex) {
-                        words[i] += " ".repeat(if (i < surplus) numToOne + 1 else numToOne)
+                        words[i] += " ".repeat(if (surplus > 0) numToOne + 1 else numToOne)
+                        surplus--
                     }
                     back.write(words.joinToString(""))
                     back.newLine()
@@ -206,6 +204,29 @@ fun alignFileByWidth(inputName: String, outputName: String) {
         }
     }
 }
+
+//        val file = File(inputName).readText().replace(Regex("""\s+"""), " ").map { it.trim() }
+//        if (file.isEmpty()) back.write("")
+//        else {
+//            for (i in file) {
+//                if (i.length > max) max = i.length
+//            }
+//            for (line in file) {
+//                val words = line.split(" ").toMutableList()
+//                if (words.size == 1) {
+//                    back.write(line)
+//                    back.newLine()
+//                } else if (line.isNotBlank()) {
+//                    val numToOne = 1 + (max - line.length) / words.lastIndex
+//                    val surplus = (max - line.length) % words.lastIndex
+//                    for (i in 0 until words.lastIndex) {
+//                        words[i] += " ".repeat(if (i < surplus) numToOne + 1 else numToOne)
+//                    }
+//                    back.write(words.joinToString(""))
+//                    back.newLine()
+//                }
+//            }
+//        }
 
 
 /**
@@ -228,7 +249,12 @@ fun alignFileByWidth(inputName: String, outputName: String) {
  * Ключи в ассоциативном массиве должны быть в нижнем регистре.
  *
  */
-fun top20Words(inputName: String): Map<String, Int> = TODO()
+fun top20Words(inputName: String): Map<String, Int> {
+    val checkOf = """[a-zа-яё]+""".toRegex().findAll(File(inputName).readText().lowercase())
+    val counting = checkOf.map { it.value }.groupBy { it }.map { it.key to it.value.count() }
+    val sortedCounting = counting.sortedByDescending { (_, v) -> v }.toMap()
+    return if (sortedCounting.size < 21) sortedCounting else sortedCounting.filterValues { it >= sortedCounting.values.toList()[20] }
+}
 
 /**
  * Средняя (14 баллов)
@@ -268,6 +294,7 @@ fun top20Words(inputName: String): Map<String, Int> = TODO()
 fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: String) {
     TODO()
 }
+
 
 /**
  * Средняя (12 баллов)
