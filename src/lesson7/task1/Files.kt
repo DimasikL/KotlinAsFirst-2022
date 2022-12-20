@@ -2,7 +2,6 @@
 
 package lesson7.task1
 
-import ru.spbstu.wheels.NullableMonad.filter
 import java.io.File
 
 // Урок 7: работа с файлами
@@ -67,12 +66,12 @@ fun deleteMarked(inputName: String, outputName: String) {
     val ans = File(outputName).bufferedWriter()
     for (i in File(inputName).readLines()) {
         if (i.isEmpty()) {
-            ans.write("\n")
+            ans.newLine()
             continue
         }
         if (i[0] != '_') {
-            ans.write("$i\n")
-
+            ans.write(i)
+            ans.newLine()
         }
     }
     ans.close()
@@ -88,8 +87,8 @@ fun deleteMarked(inputName: String, outputName: String) {
  *
  */
 fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
-    val file = File(inputName).readLines().joinToString().lowercase()
-    return substrings.associateWith { sub -> file.windowed(sub.length).count { it == sub.lowercase() } }
+    val file = File(inputName).readText().lowercase()
+    return substrings.associateWith { s -> file.windowed(s.length).count { it == s.lowercase() } }
 }
 
 
@@ -140,18 +139,22 @@ fun sibilants(inputName: String, outputName: String) {
  */
 fun centerFile(inputName: String, outputName: String) {
     val file = File(inputName).readLines().map { it.trim() }
-    var maxLir = 0
+    var maxLer = 0
     File(outputName).bufferedWriter().use {
         for (i in file) {
-            if (i.length > maxLir) maxLir = i.length
+            if (i.length >= maxLer) {
+                maxLer = i.length
+            }
         }
         for (i in file) {
-            for (h in 0 until (maxLir - i.length) / 2) it.write(" ")
+            for (f in 0 until (maxLer - i.length) / 2) it.write(" ")
             it.write(i)
             it.newLine()
         }
     }
+
 }
+
 
 /**
  * Сложная (20 баллов)
@@ -227,11 +230,6 @@ fun alignFileByWidth(inputName: String, outputName: String) {
  *
  */
 fun top20Words(inputName: String): Map<String, Int> = TODO()
-//    val checkOf = """[a-zа-яё]+""".toRegex().findAll(File(inputName).readText().lowercase())
-//    val counting = checkOf.map { it.value }.groupBy { it }.map { it.key to it.value.count() }
-//    val sortedCounting = counting.sortedByDescending { (_, v) -> v }.toMap()
-//    return if (sortedCounting.size < 21) sortedCounting else sortedCounting.filterValues { it >= sortedCounting.values.toList()[20] }
-
 
 /**
  * Средняя (14 баллов)
@@ -514,5 +512,66 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
  *
  */
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
-    TODO()
+    var counts = 1
+    File(outputName).bufferedWriter().use {
+        it.write(" $lhv | $rhv")
+        it.newLine()
+        val a =
+            if (lhv.toString().take(rhv.toString().length).toInt() > rhv) lhv.toString()
+                .take(rhv.toString().length)
+                .toInt() else lhv.toString().take(rhv.toString().length + 1).toInt()
+        var b = a / rhv * rhv
+        val d = lhv / rhv
+        var h = a - b
+        it.write("-$b")
+        for (i in 1..lhv.toString().length + 3 - b.toString().length) {
+            it.write(" ")
+        }
+        it.write("$d")
+        it.newLine()
+        for (i in 1..b.toString().length + 1) {
+            it.write("-")
+        }
+        it.newLine()
+        var i = 0
+        if (d.toString().length > 1) {
+            while (counts < d.toString().length) {
+                val l = lhv.toString().take(a.toString().length + counts).takeLast(1).toInt()
+                val g = lhv.toString().take(a.toString().length + counts).takeLast(1).toInt() + h * 10
+                for (con in 1..a.toString().length + counts - h.toString().length) {
+                    it.write(" ")
+                }
+                it.write("$h$l")
+                it.newLine()
+                b = g / rhv * rhv
+                h = g - b
+                for (count in 1..a.toString().length + counts - b.toString().length) {
+                    it.write(" ")
+                }
+                it.write("-$b")
+                it.newLine()
+                for (count in 1..a.toString().length + counts - b.toString().length) {
+                    it.write(" ")
+                }
+                for (count in 1..b.toString().length + 1) {
+                    it.write("-")
+                }
+                it.newLine()
+                counts++
+                i = g
+            }
+            h = i - b
+            for (mon in 1..a.toString().length + counts - h.toString().length) {
+                it.write(" ")
+            }
+            it.write(h.toString())
+        } else {
+            val s = b.toString().length - h.toString().length + 1
+            for (dom in 1..s) {
+                it.write(" ")
+            }
+            it.write(h.toString())
+        }
+    }
 }
+

@@ -190,9 +190,9 @@ fun flattenPhoneNumber(phone: String): String {
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Any {
+fun bestLongJump(jumps: String): Int {
     if (!jumps.matches(Regex("""([0-9]+[0-9 %-]+)"""))) return -1
-    return jumps.replace("[%-]".toRegex(), " ").split(" ").map { it.trim() }.max().toInt()
+    return jumps.replace("[%-]".toRegex(), "").split(" ").maxOfOrNull { it.trim() }!!.toInt()
 }
 
 /**
@@ -208,11 +208,12 @@ fun bestLongJump(jumps: String): Any {
  */
 fun bestHighJump(jumps: String): Any {
     if (!jumps.matches(Regex("""(\d+ [+%-]+\s?)+"""))) return -1
-    val newJumps = jumps.split(" ")
+    val gJumps = jumps.replace("[%-]".toRegex(), "")
+    val newJumps = gJumps.split(" ")
     var num = 0
     var count = 1
     do {
-        if ("+" in newJumps[count]) num = newJumps[count - 1].toInt()
+        if ("+" == newJumps[count]) num = newJumps[count - 1].toInt()
         count += 2
     } while (newJumps.size > count)
     return num
@@ -252,10 +253,10 @@ fun plusMinus(expression: String): Int {
  */
 fun firstDuplicateIndex(str: String): Int {
     val newStr = str.split(" ").map { it.lowercase() }
-    var anw = 0
+    var anwInd = 0
     for (i in 0..newStr.size - 2) {
-        if (newStr[i] == newStr[i + 1]) return anw
-        anw += newStr[i].length + 1
+        if (newStr[i] == newStr[i + 1]) return anwInd
+        anwInd += newStr[i].length + 1
     }
     return -1
 }

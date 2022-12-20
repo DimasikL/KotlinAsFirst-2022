@@ -79,7 +79,6 @@ class Tests {
         assertEquals(-1, bestLongJump("% - - % -"))
         assertEquals(754, bestLongJump("700 717 707 % 754"))
         assertEquals(-1, bestLongJump("700 + 700"))
-
     }
 
     @Test
@@ -111,6 +110,7 @@ class Tests {
         assertEquals(9, firstDuplicateIndex("Он пошёл в в школу"))
         assertEquals(40, firstDuplicateIndex("Яблоко упало на ветку с ветки оно упало на на землю"))
         assertEquals(9, firstDuplicateIndex("Мы пошли прямо Прямо располагался магазин"))
+        assertEquals(3, firstDuplicateIndex("Мы пошли пошли"))
     }
 
     @Test
