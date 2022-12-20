@@ -3,6 +3,7 @@
 package lesson7.task1
 
 import java.io.File
+import kotlin.math.max
 
 // Урок 7: работа с файлами
 // Урок интегральный, поэтому его задачи имеют сильно увеличенную стоимость
@@ -541,6 +542,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
                 for (con in 1..a.toString().length + counts - h.toString().length) {
                     it.write(" ")
                 }
+                var f = "$h$l".length
                 it.write("$h$l")
                 it.newLine()
                 b = g / rhv * rhv
@@ -550,10 +552,11 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
                 }
                 it.write("-$b")
                 it.newLine()
-                for (count in 1..a.toString().length + counts - b.toString().length) {
+                var len = max("-$b".length, f)
+                for (count in 1..a.toString().length + counts - len + 1) {
                     it.write(" ")
                 }
-                for (count in 1..b.toString().length + 1) {
+                for (count in 1..len) {
                     it.write("-")
                 }
                 it.newLine()
