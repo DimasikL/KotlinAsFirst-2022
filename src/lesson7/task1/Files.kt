@@ -515,8 +515,6 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     var counts = 1
     File(outputName).bufferedWriter().use {
-        it.write(" $lhv | $rhv")
-        it.newLine()
         val a =
             if (lhv.toString().take(rhv.toString().length).toInt() >= rhv) lhv.toString()
                 .take(rhv.toString().length)
@@ -524,8 +522,12 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         var b = a / rhv * rhv
         val d = lhv / rhv
         var h = a - b
+        val c = if (a.toString().length == b.toString().length) " " else ""
+        it.write(c)
+        it.write("$lhv | $rhv")
+        it.newLine()
         it.write("-$b")
-        for (i in 1..lhv.toString().length + 3 - b.toString().length) {
+        for (i in 1 until lhv.toString().length + 3 - b.toString().length + c.length) {
             it.write(" ")
         }
         it.write("$d")
@@ -539,7 +541,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
             while (counts < d.toString().length) {
                 val l = lhv.toString().take(a.toString().length + counts).takeLast(1).toInt()
                 val g = lhv.toString().take(a.toString().length + counts).takeLast(1).toInt() + h * 10
-                for (con in 1..a.toString().length + counts - h.toString().length) {
+                for (con in 1 until a.toString().length + counts - h.toString().length + c.length) {
                     it.write(" ")
                 }
                 var f = "$h$l".length
@@ -547,13 +549,13 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
                 it.newLine()
                 b = g / rhv * rhv
                 h = g - b
-                for (count in 1..a.toString().length + counts - b.toString().length) {
+                for (count in 1 until a.toString().length + counts - b.toString().length + c.length) {
                     it.write(" ")
                 }
                 it.write("-$b")
                 it.newLine()
                 var len = max("-$b".length, f)
-                for (count in 1..a.toString().length + counts - len + 1) {
+                for (count in 1 until a.toString().length + counts - len + 1 + c.length) {
                     it.write(" ")
                 }
                 for (count in 1..len) {
@@ -564,7 +566,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
                 i = g
             }
             h = i - b
-            for (mon in 1..a.toString().length + counts - h.toString().length) {
+            for (mon in 1 until a.toString().length + counts - h.toString().length + c.length) {
                 it.write(" ")
             }
             it.write(h.toString())
