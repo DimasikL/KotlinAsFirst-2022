@@ -518,7 +518,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         it.write(" $lhv | $rhv")
         it.newLine()
         val a =
-            if (lhv.toString().take(rhv.toString().length).toInt() > rhv) lhv.toString()
+            if (lhv.toString().take(rhv.toString().length).toInt() >= rhv) lhv.toString()
                 .take(rhv.toString().length)
                 .toInt() else lhv.toString().take(rhv.toString().length + 1).toInt()
         var b = a / rhv * rhv
